@@ -12,14 +12,14 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; overflow: hidden; }
+    html, body { height: 100%; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 4px;
+      padding: 6px;
       color: #fff;
     }
     .card {
@@ -27,61 +27,61 @@
       width: 100%;
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(20px);
-      border-radius: 16px;
+      border-radius: 18px;
       border: 1px solid rgba(255,255,255,0.1);
       overflow: hidden;
     }
     .banner {
       width: 100%;
-      height: 50px;
+      height: 60px;
       background: url('images/banner.png') center/cover no-repeat, linear-gradient(135deg, #2563eb, #7c3aed);
     }
     .header {
       text-align: center;
-      padding: 0 12px 4px;
-      margin-top: -26px;
+      padding: 0 14px 6px;
+      margin-top: -30px;
     }
     .avatar {
-      width: 52px; height: 52px;
+      width: 60px; height: 60px;
       border-radius: 50%;
-      border: 2px solid #1a1a3e;
+      border: 3px solid #1a1a3e;
       background: #1a1a3e;
-      margin: 0 auto 3px;
+      margin: 0 auto 4px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .name { font-size: 16px; font-weight: 700; line-height: 1.1; }
-    .title-text { font-size: 10px; opacity: 0.8; }
-    .company { font-size: 11px; font-weight: 600; opacity: 0.9; }
+    .name { font-size: 18px; font-weight: 700; line-height: 1.2; }
+    .title-text { font-size: 11px; opacity: 0.8; }
+    .company { font-size: 12px; font-weight: 600; opacity: 0.9; }
     .bio {
-      padding: 4px 12px;
-      font-size: 9px;
-      line-height: 1.3;
-      color: rgba(255,255,255,0.55);
+      padding: 6px 14px;
+      font-size: 10px;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.6);
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .links {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      padding: 3px 6px;
-      gap: 1px;
+      padding: 4px 8px;
+      gap: 2px;
     }
     .link-item {
       display: flex;
       align-items: center;
-      padding: 4px 6px;
+      padding: 6px 8px;
       text-decoration: none;
       color: #fff;
-      border-radius: 6px;
+      border-radius: 8px;
     }
     .link-item:active { background: rgba(255,255,255,0.05); }
     .link-icon {
-      width: 24px; height: 24px;
-      border-radius: 6px;
+      width: 28px; height: 28px;
+      border-radius: 7px;
       display: flex; align-items: center; justify-content: center;
-      margin-right: 6px;
-      font-size: 11px;
+      margin-right: 8px;
+      font-size: 13px;
       flex-shrink: 0;
     }
     .link-icon.phone { background: #22c55e; }
@@ -93,20 +93,20 @@
     .link-icon.calendar { background: #f59e0b; }
     .link-icon.course { background: #a855f7; }
     .link-icon.address { background: #6366f1; }
-    .link-label { font-size: 10px; font-weight: 600; line-height: 1.1; }
-    .link-value { font-size: 8px; opacity: 0.5; line-height: 1.1; }
+    .link-label { font-size: 12px; font-weight: 600; line-height: 1.2; }
+    .link-value { font-size: 9px; opacity: 0.5; line-height: 1.2; }
     .link-item.full { grid-column: 1 / -1; }
     .bottom-row {
       display: flex;
       align-items: center;
-      padding: 6px 10px 8px;
-      gap: 10px;
+      padding: 8px 12px 10px;
+      gap: 12px;
       border-top: 1px solid rgba(255,255,255,0.08);
     }
     .qr-box {
       background: #fff;
-      padding: 4px;
-      border-radius: 8px;
+      padding: 5px;
+      border-radius: 10px;
       flex-shrink: 0;
       line-height: 0;
     }
@@ -115,36 +115,36 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
     .save-btn {
       display: block;
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #2563eb, #7c3aed);
       color: #fff;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 700;
       text-align: center;
       text-decoration: none;
-      box-shadow: 0 3px 12px rgba(37,99,235,0.4);
+      box-shadow: 0 3px 14px rgba(37,99,235,0.4);
       -webkit-tap-highlight-color: transparent;
     }
     .save-btn:active { transform: scale(0.97); }
     .qr-actions {
       display: flex;
-      gap: 4px;
+      gap: 6px;
     }
     .qr-btn {
       flex: 1;
-      padding: 5px 4px;
+      padding: 7px 6px;
       border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 7px;
+      border-radius: 8px;
       background: rgba(255,255,255,0.08);
       color: #fff;
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       text-align: center;
@@ -221,7 +221,7 @@
   var QR_API = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(CARD_URL);
   var QR_API_HI = 'https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=' + encodeURIComponent(CARD_URL);
 
-  document.getElementById('qrcode').innerHTML = '<img src="' + QR_API + '" alt="QR Code" width="100" height="100" style="display:block">';
+  document.getElementById('qrcode').innerHTML = '<img src="' + QR_API + '" alt="QR Code" width="110" height="110" style="display:block">';
 
   function downloadQR() {
     var link = document.createElement('a');
