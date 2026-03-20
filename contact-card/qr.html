@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stuart Kerr - QR Code</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: #fff;
+    }
+    .container {
+      text-align: center;
+      max-width: 360px;
+      width: 100%;
+    }
+    .avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.2);
+      margin: 0 auto 12px;
+      overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .name { font-size: 22px; font-weight: 700; }
+    .subtitle { font-size: 13px; opacity: 0.7; margin-bottom: 20px; }
+    .qr-wrap {
+      background: #fff;
+      padding: 16px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    #qrcode canvas { display: block; }
+    .hint { font-size: 12px; opacity: 0.5; margin-bottom: 20px; }
+    .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      text-decoration: none;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.4);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .btn:active { transform: scale(0.97); }
+    @media print {
+      body { background: #fff; color: #000; }
+      .actions, .hint { display: none; }
+      .qr-wrap { box-shadow: none; border: 2px solid #000; }
+      .name { color: #000; }
+      .subtitle { color: #333; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="avatar"><img src="images/profile.jpg" alt="Stuart Kerr"></div>
+  <div class="name">Stuart Kerr</div>
+  <div class="subtitle">Founder & Owner, ISO Vision AI</div>
+  <div class="qr-wrap">
+    <div id="qrcode"></div>
+  </div>
+  <div class="hint">Scan to view digital business card</div>
+  <div class="actions">
+    <button class="btn btn-primary" onclick="downloadQR()">Download QR</button>
+    <button class="btn btn-secondary" onclick="shareQR()">Share</button>
+    <button class="btn btn-secondary" onclick="window.print()">Print</button>
+    <a class="btn btn-secondary" href="index.html">View Card</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script>
+  var baseUrl = window.location.href.replace(/qr\.html.*$/, 'index.html');
+  var CARD_URL = baseUrl;
+
+  var qrContainer = document.getElementById('qrcode');
+  var canvas = document.createElement('canvas');
+  qrContainer.appendChild(canvas);
+  QRCode.toCanvas(canvas, CARD_URL, {
+    width: 260,
+    margin: 0,
+    color: { dark: '#0a0a1a', light: '#ffffff' }
+  });
+
+  function downloadQR() {
+    var link = document.createElement('a');
+    link.download = 'Stuart_Kerr_QR.png';
+    var dlCanvas = document.createElement('canvas');
+    QRCode.toCanvas(dlCanvas, CARD_URL, {
+      width: 1024,
+      margin: 2,
+      color: { dark: '#0a0a1a', light: '#ffffff' }
+    }, function() {
+      link.href = dlCanvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  async function shareQR() {
+    var dlCanvas = document.createElement('canvas');
+    QRCode.toCanvas(dlCanvas, CARD_URL, {
+      width: 512,
+      margin: 2,
+      color: { dark: '#0a0a1a', light: '#ffffff' }
+    }, async function() {
+      if (navigator.share && navigator.canShare) {
+        try {
+          var blob = await new Promise(function(r) { dlCanvas.toBlob(r, 'image/png'); });
+          var file = new File([blob], 'Stuart_Kerr_QR.png', { type: 'image/png' });
+          await navigator.share({
+            title: 'Stuart Kerr - ISO Vision AI',
+            text: 'Scan this QR code to save my contact info',
+            files: [file]
+          });
+        } catch (e) {
+          if (e.name !== 'AbortError') fallbackShare();
+        }
+      } else {
+        fallbackShare();
+      }
+    });
+  }
+
+  function fallbackShare() {
+    navigator.clipboard.writeText(CARD_URL).then(function() {
+      var btns = document.querySelectorAll('.btn-secondary');
+      btns[0].textContent = 'Link copied!';
+      setTimeout(function() { btns[0].textContent = 'Share'; }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -106,6 +106,42 @@
       -webkit-tap-highlight-color: transparent;
     }
     .save-btn:active { transform: scale(0.97); }
+    .qr-section {
+      padding: 10px 16px 6px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .qr-title {
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+    #qrcode {
+      display: inline-block;
+      background: #fff;
+      padding: 10px;
+      border-radius: 12px;
+    }
+    #qrcode canvas { display: block; }
+    .qr-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      justify-content: center;
+    }
+    .qr-btn {
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .qr-btn:active { background: rgba(255,255,255,0.15); }
   </style>
 </head>
 <body>
@@ -157,10 +193,81 @@
       <div><div class="link-label">Address</div><div class="link-value">3201 S Ocean Blvd #401, Highland Beach FL</div></div>
     </a>
   </div>
+  <div class="qr-section">
+    <div class="qr-title">Scan to connect</div>
+    <div id="qrcode"></div>
+    <div class="qr-actions">
+      <button class="qr-btn" onclick="downloadQR()">Download QR</button>
+      <button class="qr-btn" onclick="shareQR()">Share QR</button>
+    </div>
+  </div>
   <div class="save-section">
     <a href="Stuart_Kerr.vcf" class="save-btn">Save Contact</a>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script>
+  const CARD_URL = window.location.href.split('?')[0].split('#')[0];
+
+  // Generate QR code
+  const qrContainer = document.getElementById('qrcode');
+  const canvas = document.createElement('canvas');
+  qrContainer.appendChild(canvas);
+  QRCode.toCanvas(canvas, CARD_URL, {
+    width: 180,
+    margin: 0,
+    color: { dark: '#0a0a1a', light: '#ffffff' }
+  });
+
+  function downloadQR() {
+    const link = document.createElement('a');
+    link.download = 'Stuart_Kerr_QR.png';
+    // Re-render at higher resolution for download
+    const dlCanvas = document.createElement('canvas');
+    QRCode.toCanvas(dlCanvas, CARD_URL, {
+      width: 512,
+      margin: 2,
+      color: { dark: '#0a0a1a', light: '#ffffff' }
+    }, function() {
+      link.href = dlCanvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  async function shareQR() {
+    const dlCanvas = document.createElement('canvas');
+    QRCode.toCanvas(dlCanvas, CARD_URL, {
+      width: 512,
+      margin: 2,
+      color: { dark: '#0a0a1a', light: '#ffffff' }
+    }, async function() {
+      if (navigator.share && navigator.canShare) {
+        try {
+          const blob = await new Promise(r => dlCanvas.toBlob(r, 'image/png'));
+          const file = new File([blob], 'Stuart_Kerr_QR.png', { type: 'image/png' });
+          await navigator.share({
+            title: 'Stuart Kerr - ISO Vision AI',
+            text: 'Scan this QR code to save my contact info',
+            files: [file]
+          });
+        } catch (e) {
+          if (e.name !== 'AbortError') fallbackShare();
+        }
+      } else {
+        fallbackShare();
+      }
+    });
+  }
+
+  function fallbackShare() {
+    navigator.clipboard.writeText(CARD_URL).then(function() {
+      var btn = document.querySelector('.qr-btn:last-child');
+      btn.textContent = 'Link copied!';
+      setTimeout(function() { btn.textContent = 'Share QR'; }, 2000);
+    });
+  }
+</script>
 
 </body>
 </html>
