@@ -90,65 +90,56 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 <script>
-  var baseUrl = window.location.href.replace(/qr\.html.*$/, 'index.html');
-  var CARD_URL = baseUrl;
+  var CARD_URL = 'https://stuart-kerr-card.netlify.app';
 
-  var qrContainer = document.getElementById('qrcode');
-  var canvas = document.createElement('canvas');
-  qrContainer.appendChild(canvas);
-  QRCode.toCanvas(canvas, CARD_URL, {
-    width: 260,
-    margin: 0,
-    color: { dark: '#0a0a1a', light: '#ffffff' }
-  });
+  var qrSize = 280;
+  var qrImg = document.createElement('img');
+  qrImg.src = 'https://chart.googleapis.com/chart?cht=qr&chs=' + qrSize + 'x' + qrSize + '&chl=' + encodeURIComponent(CARD_URL) + '&choe=UTF-8&chld=M|2';
+  qrImg.alt = 'QR Code - Stuart Kerr';
+  qrImg.width = qrSize;
+  qrImg.height = qrSize;
+  qrImg.style.display = 'block';
+  document.getElementById('qrcode').appendChild(qrImg);
 
   function downloadQR() {
-    var link = document.createElement('a');
-    link.download = 'Stuart_Kerr_QR.png';
-    var dlCanvas = document.createElement('canvas');
-    QRCode.toCanvas(dlCanvas, CARD_URL, {
-      width: 1024,
-      margin: 2,
-      color: { dark: '#0a0a1a', light: '#ffffff' }
-    }, function() {
-      link.href = dlCanvas.toDataURL('image/png');
+    var dlImg = new Image();
+    dlImg.crossOrigin = 'anonymous';
+    dlImg.onload = function() {
+      var c = document.createElement('canvas');
+      c.width = 1024; c.height = 1024;
+      c.getContext('2d').drawImage(dlImg, 0, 0, 1024, 1024);
+      var link = document.createElement('a');
+      link.download = 'Stuart_Kerr_QR.png';
+      link.href = c.toDataURL('image/png');
       link.click();
-    });
+    };
+    dlImg.onerror = function() {
+      window.open(qrImg.src, '_blank');
+    };
+    dlImg.src = 'https://chart.googleapis.com/chart?cht=qr&chs=1024x1024&chl=' + encodeURIComponent(CARD_URL) + '&choe=UTF-8&chld=M|2';
   }
 
   async function shareQR() {
-    var dlCanvas = document.createElement('canvas');
-    QRCode.toCanvas(dlCanvas, CARD_URL, {
-      width: 512,
-      margin: 2,
-      color: { dark: '#0a0a1a', light: '#ffffff' }
-    }, async function() {
-      if (navigator.share && navigator.canShare) {
-        try {
-          var blob = await new Promise(function(r) { dlCanvas.toBlob(r, 'image/png'); });
-          var file = new File([blob], 'Stuart_Kerr_QR.png', { type: 'image/png' });
-          await navigator.share({
-            title: 'Stuart Kerr - ISO Vision AI',
-            text: 'Scan this QR code to save my contact info',
-            files: [file]
-          });
-        } catch (e) {
-          if (e.name !== 'AbortError') fallbackShare();
-        }
-      } else {
-        fallbackShare();
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Stuart Kerr - ISO Vision AI',
+          text: 'Scan this QR code to save my contact info',
+          url: CARD_URL
+        });
+        return;
+      } catch (e) {
+        if (e.name === 'AbortError') return;
       }
-    });
-  }
-
-  function fallbackShare() {
-    navigator.clipboard.writeText(CARD_URL).then(function() {
-      var btns = document.querySelectorAll('.btn-secondary');
-      btns[0].textContent = 'Link copied!';
-      setTimeout(function() { btns[0].textContent = 'Share'; }, 2000);
-    });
+    }
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(CARD_URL).then(function() {
+        var btns = document.querySelectorAll('.btn-secondary');
+        btns[0].textContent = 'Link copied!';
+        setTimeout(function() { btns[0].textContent = 'Share'; }, 2000);
+      });
+    }
   }
 </script>
 
