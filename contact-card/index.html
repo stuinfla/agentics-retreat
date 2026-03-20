@@ -12,14 +12,14 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; }
+    html, body { height: 100%; overflow: hidden; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 8px;
+      padding: 4px;
       color: #fff;
     }
     .card {
@@ -27,55 +27,61 @@
       width: 100%;
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(20px);
-      border-radius: 20px;
+      border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.1);
       overflow: hidden;
     }
     .banner {
       width: 100%;
-      height: 80px;
+      height: 50px;
       background: url('images/banner.png') center/cover no-repeat, linear-gradient(135deg, #2563eb, #7c3aed);
     }
     .header {
       text-align: center;
-      padding: 0 16px 10px;
-      margin-top: -36px;
+      padding: 0 12px 4px;
+      margin-top: -26px;
     }
     .avatar {
-      width: 72px; height: 72px;
+      width: 52px; height: 52px;
       border-radius: 50%;
-      border: 3px solid #1a1a3e;
+      border: 2px solid #1a1a3e;
       background: #1a1a3e;
-      margin: 0 auto 6px;
+      margin: 0 auto 3px;
       overflow: hidden;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .name { font-size: 20px; font-weight: 700; line-height: 1.2; }
-    .title-text { font-size: 12px; opacity: 0.8; }
-    .company { font-size: 13px; font-weight: 600; opacity: 0.9; }
+    .name { font-size: 16px; font-weight: 700; line-height: 1.1; }
+    .title-text { font-size: 10px; opacity: 0.8; }
+    .company { font-size: 11px; font-weight: 600; opacity: 0.9; }
     .bio {
-      padding: 8px 16px;
-      font-size: 11px;
-      line-height: 1.4;
-      color: rgba(255,255,255,0.6);
+      padding: 4px 12px;
+      font-size: 9px;
+      line-height: 1.3;
+      color: rgba(255,255,255,0.55);
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .links { padding: 2px 0; }
+    .links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 3px 6px;
+      gap: 1px;
+    }
     .link-item {
       display: flex;
       align-items: center;
-      padding: 7px 16px;
+      padding: 4px 6px;
       text-decoration: none;
       color: #fff;
+      border-radius: 6px;
     }
     .link-item:active { background: rgba(255,255,255,0.05); }
     .link-icon {
-      width: 32px; height: 32px;
-      border-radius: 8px;
+      width: 24px; height: 24px;
+      border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
-      margin-right: 10px;
-      font-size: 15px;
+      margin-right: 6px;
+      font-size: 11px;
       flex-shrink: 0;
     }
     .link-icon.phone { background: #22c55e; }
@@ -87,58 +93,61 @@
     .link-icon.calendar { background: #f59e0b; }
     .link-icon.course { background: #a855f7; }
     .link-icon.address { background: #6366f1; }
-    .link-label { font-size: 13px; font-weight: 500; }
-    .link-value { font-size: 10px; opacity: 0.5; }
-    .save-section { padding: 10px 16px 12px; }
+    .link-label { font-size: 10px; font-weight: 600; line-height: 1.1; }
+    .link-value { font-size: 8px; opacity: 0.5; line-height: 1.1; }
+    .link-item.full { grid-column: 1 / -1; }
+    .bottom-row {
+      display: flex;
+      align-items: center;
+      padding: 6px 10px 8px;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .qr-box {
+      background: #fff;
+      padding: 4px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      line-height: 0;
+    }
+    .qr-box img { display: block; }
+    .bottom-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
     .save-btn {
       display: block;
       width: 100%;
-      padding: 13px;
+      padding: 10px;
       border: none;
-      border-radius: 14px;
+      border-radius: 10px;
       background: linear-gradient(135deg, #2563eb, #7c3aed);
       color: #fff;
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 700;
       text-align: center;
       text-decoration: none;
-      box-shadow: 0 4px 16px rgba(37,99,235,0.4);
+      box-shadow: 0 3px 12px rgba(37,99,235,0.4);
       -webkit-tap-highlight-color: transparent;
     }
     .save-btn:active { transform: scale(0.97); }
-    .qr-section {
-      padding: 10px 16px 6px;
-      text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-    .qr-title {
-      font-size: 12px;
-      font-weight: 600;
-      opacity: 0.7;
-      margin-bottom: 8px;
-    }
-    #qrcode {
-      display: inline-block;
-      background: #fff;
-      padding: 10px;
-      border-radius: 12px;
-    }
-    #qrcode canvas { display: block; }
     .qr-actions {
       display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      justify-content: center;
+      gap: 4px;
     }
     .qr-btn {
-      padding: 8px 16px;
+      flex: 1;
+      padding: 5px 4px;
       border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 10px;
+      border-radius: 7px;
       background: rgba(255,255,255,0.08);
       color: #fff;
-      font-size: 12px;
+      font-size: 9px;
       font-weight: 600;
       cursor: pointer;
+      text-align: center;
       -webkit-tap-highlight-color: transparent;
     }
     .qr-btn:active { background: rgba(255,255,255,0.15); }
@@ -154,7 +163,7 @@
     <div class="title-text">Founder & Owner</div>
     <div class="company">ISO Vision AI</div>
   </div>
-  <div class="bio">30+ years in tech, exec roles at 8 early-stage companies, driving 2 to $B+ IPO's and 5 to strategic sales. Board member of 5 tech companies, working with numerous PE & VC firms.</div>
+  <div class="bio">30+ years in tech, exec roles at 8 early-stage companies, driving 2 to $B+ IPO's and 5 to strategic sales. Board member of 5 tech companies.</div>
   <div class="links">
     <a href="tel:+13129539668" class="link-item">
       <div class="link-icon phone">&#9742;</div>
@@ -174,7 +183,7 @@
     </a>
     <a href="https://linkedin.com/in/stuartkerr" class="link-item" target="_blank">
       <div class="link-icon linkedin">in</div>
-      <div><div class="link-label">LinkedIn</div><div class="link-value">linkedin.com/in/stuartkerr</div></div>
+      <div><div class="link-label">LinkedIn</div><div class="link-value">stuartkerr</div></div>
     </a>
     <a href="https://twitter.com/sikerr" class="link-item" target="_blank">
       <div class="link-icon twitter">X</div>
@@ -182,27 +191,28 @@
     </a>
     <a href="https://tidycal.com/stuartkerr/" class="link-item" target="_blank">
       <div class="link-icon calendar">&#128197;</div>
-      <div><div class="link-label">Schedule Meeting</div><div class="link-value">tidycal.com/stuartkerr</div></div>
+      <div><div class="link-label">Schedule</div><div class="link-value">tidycal.com</div></div>
     </a>
     <a href="https://www.udemy.com/course/microsoft-excel-roi-selling-for-sales-professionals/" class="link-item" target="_blank">
       <div class="link-icon course">&#127891;</div>
       <div><div class="link-label">Udemy Course</div><div class="link-value">Excel ROI Selling</div></div>
     </a>
-    <a href="#" class="link-item" onclick="navigator.clipboard.writeText('3201 S Ocean Blvd, #401, Highland Beach FL 33487');return false;">
+    <a href="#" class="link-item full" onclick="navigator.clipboard.writeText('3201 S Ocean Blvd, #401, Highland Beach FL 33487');this.querySelector('.link-value').textContent='Copied!';return false;">
       <div class="link-icon address">&#127968;</div>
-      <div><div class="link-label">Address</div><div class="link-value">3201 S Ocean Blvd #401, Highland Beach FL</div></div>
+      <div><div class="link-label">Address</div><div class="link-value">3201 S Ocean Blvd #401, Highland Beach FL 33487</div></div>
     </a>
   </div>
-  <div class="qr-section">
-    <div class="qr-title">Scan to connect</div>
-    <div id="qrcode"></div>
-    <div class="qr-actions">
-      <button class="qr-btn" onclick="downloadQR()">Download QR</button>
-      <button class="qr-btn" onclick="shareQR()">Share QR</button>
+  <div class="bottom-row">
+    <div class="qr-box">
+      <div id="qrcode"></div>
     </div>
-  </div>
-  <div class="save-section">
-    <a href="Stuart_Kerr.vcf" class="save-btn">Save Contact</a>
+    <div class="bottom-right">
+      <a href="Stuart_Kerr.vcf" class="save-btn">Save Contact</a>
+      <div class="qr-actions">
+        <button class="qr-btn" onclick="downloadQR()">Download QR</button>
+        <button class="qr-btn" onclick="shareQR()">Share QR</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -211,9 +221,7 @@
   var QR_API = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(CARD_URL);
   var QR_API_HI = 'https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=' + encodeURIComponent(CARD_URL);
 
-  // Render QR code as plain <img>
-  var qrEl = document.getElementById('qrcode');
-  qrEl.innerHTML = '<img src="' + QR_API + '" alt="QR Code - Stuart Kerr" width="180" height="180" style="display:block">';
+  document.getElementById('qrcode').innerHTML = '<img src="' + QR_API + '" alt="QR Code" width="100" height="100" style="display:block">';
 
   function downloadQR() {
     var link = document.createElement('a');
